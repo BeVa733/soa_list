@@ -59,5 +59,6 @@ void list_dtor    (spisok* list);
 int insert_after  (spisok* list, int index, int value);
 int insert_before (spisok* list, int index, int value);
 int list_delete   (spisok* list, int index);
+void list_print(spisok* list);
 
 #endif

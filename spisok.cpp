@@ -17,14 +17,21 @@ int main (int argc, char* argv[])
     list_ctor (&list, 10);
 
     insert_after(&list, 0, 10);
-    insert_before(&list, 1, 22);
-    list_graph(&list, argv[1]);
-    insert_after(&list, 2, 30);
-    list_delete(&list, 2);
-    insert_after(&list, 2, 25);
+    insert_after(&list, 1, 22);
+    int ind = insert_after(&list, 2, 23);
+    insert_after(&list, 3, 12);
     list_graph(&list, argv[1]);
 
-    list_dump(&list, 0);
+    list.prev[list.next[ind]] = list.prev[ind];
+    list.prev[ind] = 300;
+
+    // insert_after(&list, 2, 30);
+    // list_delete(&list, 2);
+    // insert_after(&list, 2, 25);
+    list_graph(&list, argv[1]);
+
+    unsigned int code = list_verif (&list);
+    list_dump(&list, code);
 
     return 0;
 }
@@ -76,8 +83,11 @@ int insert_after(spisok* list, int index, int value)
 {
     LIST_VERIFY;
 
-    if (list->prev[index] == POIZON)
+    if (list->prev[index] == POIZON || index == POIZON)
+    {
+        printf("ERROR: CANNOT INSERT (BAD ANHCOR)");
         return POIZON;
+    }
 
     int new_index = list->free;
     list->free = list->next[new_index];
@@ -96,6 +106,7 @@ int insert_after(spisok* list, int index, int value)
 
 int insert_before(spisok* list, int index, int value)
 {
+    //if(list->prev[index] == -1)
     return insert_after(list, list->prev[index], value);
 }
 
